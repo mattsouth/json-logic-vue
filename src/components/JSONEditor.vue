@@ -3,11 +3,14 @@
         v-model:value="text"
         lang="json"
         theme="textmate"
+        :options="{tabSize: 2}"
         :style="style" />
 </template>
 
 <script>
 import { VAceEditor } from 'vue3-ace-editor';
+import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/theme-textmate';
 
 export default {
     name: 'json-editor',
