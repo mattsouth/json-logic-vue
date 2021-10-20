@@ -11,11 +11,12 @@
             </div>
             <div class="col">
                 Expression
-                <json-editor :value = "expr" @update="expr = $event" />
+                <json-editor :value="expr" @update="expr = $event" />
+                <input type="text" v-model="render" />
             </div>
             <div class="col">
                 Result
-                <input type="text" v-model="result" />
+                <input type="text" :value="JSON.stringify(result)" />
             </div>
         </div>
     </main>
@@ -25,6 +26,8 @@
 <script>
 import JSONEditor from './components/JSONEditor';
 import * as jsonLogic from 'json-logic-js';
+import { render } from './renderer';
+const transformJS = require("js-to-json-logic");
 
 export default {
     name: 'App',
@@ -40,6 +43,16 @@ export default {
     computed: {
         result() {
             return jsonLogic.apply(this.expr, this.context);
+        },
+        render: {
+            get: function() {
+                return render(this.expr);
+            },
+            set: function(text) {
+                // console.log('render:set', text);
+                // console.log(JSON.stringify(transformJS(text)));
+                this.expr = transformJS(text);
+            }
         }
     }
 }
