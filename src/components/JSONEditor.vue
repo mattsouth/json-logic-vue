@@ -3,14 +3,18 @@
         v-model:value="text"
         lang="json"
         theme="textmate"
-        :options="{tabSize: 2}"
+        :options="{tabSize: 2, useWorker: true}"
         :style="style" />
 </template>
 
 <script>
 import { VAceEditor } from 'vue3-ace-editor';
+import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-textmate';
+import workerJsonUrl from 'file-loader?esModule=false!ace-builds/src-noconflict/worker-json.js';
+
+ace.config.setModuleUrl('ace/mode/json_worker', workerJsonUrl);
 
 export default {
     name: 'json-editor',
