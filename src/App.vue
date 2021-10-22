@@ -26,7 +26,7 @@
 <script>
 import JSONEditor from './components/JSONEditor';
 import * as jsonLogic from 'json-logic-js';
-import { render } from './renderer';
+import { renderJsonLogic } from './renderer';
 const transformJS = require("js-to-json-logic");
 
 export default {
@@ -46,7 +46,7 @@ export default {
         },
         render: {
             get: function() {
-                return render(this.expr);
+                return renderJsonLogic(this.expr);
             },
             set: function(text) {
                 // console.log('render:set', text);
