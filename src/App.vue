@@ -1,7 +1,8 @@
 <template>
 <div class="col-lg-12 mx-auto p-3">
     <header>
-        <span class="fs-2">json-logic demo</span>
+        <div class="fs-2">JsonLogic demo</div>
+        <p><a href="https://jsonlogic.com">JsonLogic</a> allows users to define expressions over data.  This tool is for testing and sharing those expressions.</p>
     </header>
     <main>
         <div class="row">
@@ -11,14 +12,12 @@
                     <thead>
                         <tr>
                             <th>name</th>
-                            <th>type</th>
                             <th>value(s)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="dd in context" v-bind:key="dd">
                             <td>{{dd.name}}</td>
-                            <td>{{dd.type}}</td>
                             <td>{{renderValues(dd.values)}}</td>
                         </tr>
                     </tbody>
@@ -26,12 +25,12 @@
             </div>
             <div class="col">
                 <div class="fs-4">Expression</div>
-                <input type="text" v-model="render" />
+                <input type="text" v-model="render" class="my-2 form-control"/>
                 <json-editor :value="expr" @update="expr = $event" />
             </div>
             <div class="col">
                 <div class="fs-4">Evaluation</div>
-                <table class="table">
+                <table class="table table-sm">
                     <thead>
                         <tr>
                             <th v-for="name in dds" v-bind:key="name">{{name}}</th>
@@ -62,8 +61,8 @@ export default {
     data() {
         return {
             context: [
-                {name: "age", type: "integer", values: [null, -Infinity, 0, 17, 18, 19, Infinity]},
-                {name: "presentable", type: "boolean", values: [null, false, true]}
+                {name: "age", values: [null, -Infinity, 0, 17, 18, 19, Infinity]},
+                {name: "presentable", values: [null, false, true]}
             ],
             expr: { "and": [{">=": [{var: "age"}, 18]}, {var: "presentable"}]}
         }
