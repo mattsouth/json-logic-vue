@@ -26,8 +26,8 @@
 <script>
 import JSONEditor from './components/JSONEditor';
 import * as jsonLogic from 'json-logic-js';
-import { renderJsonLogic } from './renderer';
-const transformJS = require("js-to-json-logic");
+import renderJsonLogic from 'json-logic-to-js';
+import transformJS from 'js-to-json-logic';
 
 export default {
     name: 'App',
