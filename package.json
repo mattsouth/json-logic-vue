@@ -1,5 +1,6 @@
 {
-  "name": "jslogic-vue",
+  "name": "json-logic-vue",
+  "description": "Some vue components for working with json-logic",
   "version": "0.1.0",
   "private": true,
   "scripts": {

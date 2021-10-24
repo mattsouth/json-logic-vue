@@ -1,4 +1,4 @@
-# jslogic-vue
+# json-logic-vue
 
 ## Project setup
 ```
