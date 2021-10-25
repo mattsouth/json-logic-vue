@@ -7,16 +7,21 @@
     <main>
         <div class="row">
             <div class="col">
+                <div class="fs-4">Expression</div>
+                <input type="text" v-model="render" class="my-2 form-control"/>
+                <json-editor :value="expr" @update="expr = $event" />
+            </div>
+            <div class="col">
                 <div class="fs-4">Context</div>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>name</th>
+                            <th>variable</th>
                             <th>value(s)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="dd in context" v-bind:key="dd">
+                        <tr v-for="dd in context" v-bind:key="dd" :class="{'text-muted text-decoration-line-through': !(variables.includes(dd.name))}">
                             <td>{{dd.name}}</td>
                             <td>{{renderValues(dd.values)}}</td>
                         </tr>
@@ -24,22 +29,17 @@
                 </table>
             </div>
             <div class="col">
-                <div class="fs-4">Expression</div>
-                <input type="text" v-model="render" class="my-2 form-control"/>
-                <json-editor :value="expr" @update="expr = $event" />
-            </div>
-            <div class="col">
                 <div class="fs-4">Evaluation</div>
                 <table class="table table-sm">
                     <thead>
                         <tr>
-                            <th v-for="name in dds" v-bind:key="name">{{name}}</th>
+                            <th v-for="name in variables" v-bind:key="name">{{name}}</th>
                             <th>value</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="res in result" v-bind:key="res">
-                            <td v-for="name in dds" v-bind:key="name">{{renderValue(res[name])}}</td>
+                            <td v-for="name in variables" v-bind:key="name">{{renderValue(res[name])}}</td>
                             <td>{{renderValue(res._value)}}</td>
                         </tr>
                     </tbody>
@@ -73,8 +73,8 @@ export default {
     computed: {
         result() {
             const r = [];
-            const context = this.context;
-            const dds = this.dds;
+            const context = this.filtered;
+            const dds = this.variables;
             function helper(obj, i) {
                 for (var j=0, l=context[i].values.length; j<l; j++) {
                     var o = { ...obj }; // clone obj
@@ -96,6 +96,33 @@ export default {
         },
         dds() {
             return this.context.map((val) => val.name);
+        },
+        variables() {
+            function helper(expr, vals) {
+                if (Object.keys(expr).includes("var")) {
+                    vals.push(expr.var);
+                    return vals;
+                } else {
+                    const keys = Object.keys(expr);
+                    if (keys.length > 0) {
+                        const val = expr[Object.keys(expr)[0]];
+                        if (Array.isArray(val)) {
+                            for (const arrexpr of val) {
+                                vals = vals.concat(helper(arrexpr, []));
+                            }
+                            return vals;
+                        } else {
+                            return helper(val, vals);
+                        }
+                    } else {
+                        return vals;
+                    }
+                }
+            }
+            return helper(this.expr, []);
+        },
+        filtered() {
+            return this.context.filter((val) => this.variables.includes(val.name));
         },
         render: {
             get: function() {
