@@ -9,7 +9,7 @@
             <div class="col">
                 <button type="button" class="btn btn-primary float-end" @click="expr={}; context=[]">Clear</button>
                 <div class="fs-4">Expression</div>
-                <input type="text" v-model="render" class="my-2 form-control"/>
+                <text-editor :value="expr" @update="expr = $event"/>
                 <json-editor :value="expr" @update="expr = $event" />
             </div>
             <div class="col">
@@ -78,9 +78,8 @@
 
 <script>
 import JSONEditor from './components/JSONEditor';
+import TextExprEditor from './components/TextExprEditor';
 import * as jsonLogic from 'json-logic-js';
-import renderJsonLogic from 'json-logic-to-js';
-import transformJS from 'js-to-json-logic';
 import { Modal } from 'bootstrap';
 
 let varModal = null;
@@ -105,7 +104,8 @@ export default {
         varModal =  new Modal(this.$refs.variableModal);
     },
     components: {
-        'json-editor': JSONEditor
+        'json-editor': JSONEditor,
+        'text-editor': TextExprEditor
     },
     computed: {
         result() {
@@ -162,18 +162,6 @@ export default {
         },
         filtered() {
             return this.context.filter((val) => this.variables.includes(val.name));
-        },
-        render: {
-            get: function() {
-                return renderJsonLogic(this.expr);
-            },
-            set: function(text) {
-                try {
-                    this.expr = transformJS(text);
-                } catch (e) {
-                    console.log('error converting JL to JS');
-                }
-            }
         },
         contextValue() {
             if (this.modalState.variableIdx>-1 && this.modalState.valueIdx>-1) {
