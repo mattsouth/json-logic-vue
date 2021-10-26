@@ -16,8 +16,8 @@ Useful:
 
 - [x] mock up demo
 - [x] ignore context variables not used in the expression
-- [ ] edit context values
+- [x] edit context values
 - [ ] sortable evaluation table
-- [ ] new expression button
+- [x] new expression button
 - [ ] share with url
 - [ ] deploy to github pages
