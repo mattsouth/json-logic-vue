@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       context: [
-        { name: "age", values: [null, -Infinity, 0, 17, 18, 19, Infinity] },
+        { name: "age", values: [null, 0, 17, 18, 19] },
         { name: "presentable", values: [null, false, true] },
       ],
       expr: { and: [{ ">=": [{ var: "age" }, 18] }, { var: "presentable" }] },
