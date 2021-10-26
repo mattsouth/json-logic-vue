@@ -1,3 +1,10 @@
+<docs>
+Provides an editable list of context variables and their associated test values.
+
+TODO: separate out the modal component?
+TODO: fix data entry in modal
+</docs>
+
 <template>
   <table class="table">
     <thead>
@@ -8,7 +15,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="dd in value"
+        v-for="dd in context"
         v-bind:key="dd"
         :class="{
           'text-muted text-decoration-line-through': !variables.includes(
@@ -84,12 +91,13 @@
 
 <script>
 import { Modal } from "bootstrap";
+import Shared from "./shared";
 
 let varModal = null;
 
 export default {
   props: {
-    value: {
+    context: {
       type: Array,
       required: true,
     },
@@ -98,6 +106,7 @@ export default {
       required: true,
     },
   },
+  mixins: [Shared],
   emits: ['update'],
   mounted() {
     varModal = new Modal(this.$refs.variableModal);
@@ -115,7 +124,7 @@ export default {
     contextValue() {
       if (this.modalState.variableIdx > -1 && this.modalState.valueIdx > -1) {
         return this.renderValue(
-          this.value[this.modalState.variableIdx].values[
+          this.context[this.modalState.variableIdx].values[
             this.modalState.valueIdx
           ]
         );
@@ -125,25 +134,18 @@ export default {
     },
   },
   methods: {
-    renderValue(val) {
-      if (val == null) {
-        return "null";
-      } else {
-        return val.toString();
-      }
-    },
     renderValues(vals) {
       return vals.map((val) => this.renderValue(val)).join(", ");
     },
     removeVar(dd) {
-      const clone = [...this.value];
-      clone.splice(this.value.indexOf(dd),1);
+      const clone = [...this.context];
+      clone.splice(this.context.indexOf(dd),1);
       this.$emit("update", clone);
     },
     openModal(dd) {
       this.current = dd;
       this.modalState = {
-        variableIdx: this.value.indexOf(dd),
+        variableIdx: this.context.indexOf(dd),
         valueIdx: -1,
       };
       varModal.show();
@@ -156,7 +158,7 @@ export default {
       }
     },
     updateContextValue(evt) {
-      const clone =  [...this.value];
+      const clone =  [...this.context];
       if (this.modalState.valueIdx == -1) {
         clone[this.modalState.variableIdx].values.push(JSON.parse(evt.target.value));
       } else {
@@ -166,7 +168,7 @@ export default {
       this.modalState.valueIdx = -1;
     },
     removeValue(idx) {
-      const clone =  [...this.value];
+      const clone =  [...this.context];
       clone[this.modalState.variableIdx].values.splice(idx, 1);
       this.$emit("update", clone);
     },
