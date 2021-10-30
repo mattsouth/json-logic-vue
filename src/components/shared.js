@@ -6,7 +6,11 @@ export default {
       if (val == null) {
         return "null";
       } else {
-        return val.toString();
+        if (typeof val == "string") {
+          return '"' + val + '"';
+        } else {
+          return val.toString();
+        }
       }
     },
   }
