@@ -64,8 +64,7 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Use the following url to share this example:</p>
-        <a :href="shareURL()">{{shareURL()}}</a>
+        <p>Use this <a :href="shareURL()">url</a> to share this example.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

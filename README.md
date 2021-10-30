@@ -1,6 +1,7 @@
 # json-logic-vue
 
-A project for investigating tool support for Json Logic expressions.
+A project for investigating tool support for Json Logic expressions.  
+Click [here](https://mattsouth.github.io/json-logic-vue/?expr=!flag&context=%5B%7B%22name%22%3A%22flag%22%2C%22values%22%3A%5Bnull%2Cfalse%2Ctrue%5D%7D%5D) for a demo.
 
 ## Notes
 

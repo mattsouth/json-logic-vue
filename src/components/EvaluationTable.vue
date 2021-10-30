@@ -7,7 +7,7 @@ Provides a truth table that enumerates all combinations of context variable valu
     <thead>
       <tr>
         <th v-for="name in variables" v-bind:key="name">{{ name }}</th>
-        <th>value</th>
+        <th>result</th>
       </tr>
     </thead>
     <tbody>
