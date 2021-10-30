@@ -11,12 +11,19 @@ Provides a truth table that enumerates all combinations of context variable valu
       </tr>
     </thead>
     <tbody>
-      <tr v-for="res in combinations" v-bind:key="res">
-        <td v-for="name in variables" v-bind:key="name">
-          {{ renderValue(res[name]) }}
-        </td>
-        <td>{{ renderValue(res._value) }}</td>
-      </tr>
+      <template v-if="variables.length>0">
+          <tr v-for="res in combinations" v-bind:key="res">
+            <td v-for="name in variables" v-bind:key="name">
+              {{ renderValue(res[name]) }}
+            </td>
+            <td>{{ renderValue(res._value) }}</td>
+          </tr>
+      </template>
+      <template v-else>
+          <tr v-if="Object.keys(expr).length>0">
+            <td>{{ renderValue(singleton) }}</td>
+          </tr>
+      </template>
     </tbody>
   </table>
 </template>
@@ -65,6 +72,9 @@ export default {
       }
       return r;
     },
+    singleton() {
+      return jsonLogic.apply(this.expr);
+    }
   },
 };
 </script>

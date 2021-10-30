@@ -9,9 +9,9 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
     <header>
       <div class="fs-2">JsonLogic demo</div>
       <p>
-        <a href="https://jsonlogic.com">JsonLogic</a> allows users to define
-        expressions over data. This tool is for testing and sharing those
-        expressions.
+        <a href="https://jsonlogic.com">JsonLogic</a> allows
+        side-effect free expressions over data. This tool is for testing and
+        sharing those expressions.
       </p>
     </header>
     <main>
@@ -24,6 +24,7 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
               expr = {};
               context = [];
             "
+            :disabled="Object.keys(expr).length==0"
           >
             Clear
           </button>
@@ -43,7 +44,7 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
             <button
               type="button"
               class="btn btn-primary float-end"
-              :disabled="variables.length==0"
+              :disabled="Object.keys(expr).length==0"
               data-bs-toggle="modal" data-bs-target="#shareModal"
             >
               Share
