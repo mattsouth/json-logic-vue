@@ -4,9 +4,9 @@ export default {
   methods: {
     renderValue(val) {
       if (val == null) {
-          return "null";
+        return "null";
       } else {
-          return val.toString();
+        return val.toString();
       }
     },
   }

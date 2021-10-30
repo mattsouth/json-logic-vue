@@ -19,5 +19,5 @@ Useful:
 - [x] edit context values
 - [ ] sortable evaluation table
 - [x] new expression button
-- [ ] share with url
+- [x] share with url
 - [ ] deploy to github pages
