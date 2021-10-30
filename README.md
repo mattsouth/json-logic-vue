@@ -20,4 +20,4 @@ Useful:
 - [ ] sortable evaluation table
 - [x] new expression button
 - [x] share with url
-- [ ] deploy to github pages
+- [x] deploy to github pages
