@@ -9,9 +9,9 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
     <header>
       <div class="fs-2">JsonLogic demo</div>
       <p>
-        <a href="https://jsonlogic.com">JsonLogic</a> allows
-        side-effect free expressions over data. This tool is for testing and
-        sharing those expressions.
+        <a href="https://jsonlogic.com">JsonLogic</a> allows side-effect free
+        expressions over data. This tool is for testing and sharing those
+        expressions.
       </p>
     </header>
     <main>
@@ -24,7 +24,7 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
               expr = {};
               context = [];
             "
-            :disabled="Object.keys(expr).length==0"
+            :disabled="Object.keys(expr).length == 0"
           >
             Clear
           </button>
@@ -41,38 +41,62 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
           />
         </div>
         <div class="col">
-            <button
-              type="button"
-              class="btn btn-primary float-end"
-              :disabled="Object.keys(expr).length==0"
-              data-bs-toggle="modal" data-bs-target="#shareModal"
-            >
-              Share
-            </button>
+          <button
+            type="button"
+            class="btn btn-primary float-end"
+            :disabled="Object.keys(expr).length == 0"
+            data-bs-toggle="modal"
+            data-bs-target="#shareModal"
+          >
+            Share
+          </button>
           <div class="fs-4">Evaluation</div>
-          <evaluation-table :expr="expr" :context="context" :variables="variables"/>
+          <evaluation-table
+            :expr="expr"
+            :context="context"
+            :variables="variables"
+          />
         </div>
       </div>
     </main>
   </div>
 
   <!-- Modal -->
-<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="Share expression and variable values" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Share example via url</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Use this <a :href="shareURL()">url</a> to share this example.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  <div
+    class="modal fade"
+    id="shareModal"
+    tabindex="-1"
+    aria-labelledby="Share expression and variable values"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Share example via url
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>Use this <a :href="shareURL()">url</a> to share this example.</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -97,15 +121,15 @@ export default {
     "context-table": ContextTable,
     "evaluation-table": EvaluationTable,
   },
-  created: function() {
+  created: function () {
     // initial data can be passed in the querystring
     // see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('context')) {
-      this.context = JSON.parse(urlParams.get('context'));
+    if (urlParams.get("context")) {
+      this.context = JSON.parse(urlParams.get("context"));
     }
-    if (urlParams.get('expr')) {
-      this.expr = transformJS(urlParams.get('expr'));
+    if (urlParams.get("expr")) {
+      this.expr = transformJS(urlParams.get("expr"));
     }
   },
   computed: {
@@ -115,19 +139,28 @@ export default {
           vals.push(expr.var);
           return vals;
         } else {
-          const keys = Object.keys(expr);
-          if (keys.length > 0) {
-            const val = expr[Object.keys(expr)[0]];
-            if (Array.isArray(val)) {
-              for (const arrexpr of val) {
-                vals = vals.concat(helper(arrexpr, []));
-              }
-              return vals;
-            } else {
-              return helper(val, vals);
-            }
-          } else {
+          if (typeof expr == "string") {
             return vals;
+          } else {
+            const keys = Object.keys(expr);
+            if (keys.length > 0) {
+              const val = expr[Object.keys(expr)[0]];
+              if (Array.isArray(val)) {
+                for (const arrexpr of val) {
+                  const newvals = helper(arrexpr, []);
+                  for (const newval of newvals) {
+                    if (!vals.includes(newval)) {
+                      vals.push(newval);
+                    }
+                  }
+                }
+                return vals;
+              } else {
+                return helper(val, vals);
+              }
+            } else {
+              return vals;
+            }
           }
         }
       }
@@ -136,8 +169,14 @@ export default {
   },
   methods: {
     shareURL() {
-      return process.env.BASE_URL + "?expr=" + encodeURIComponent(renderJsonLogic(this.expr)) + "&context=" + encodeURIComponent(JSON.stringify(this.context))
-    }
+      return (
+        process.env.BASE_URL +
+        "?expr=" +
+        encodeURIComponent(renderJsonLogic(this.expr)) +
+        "&context=" +
+        encodeURIComponent(JSON.stringify(this.context))
+      );
+    },
   },
   watch: {
     expr() {
