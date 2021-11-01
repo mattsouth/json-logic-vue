@@ -16,7 +16,7 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
     </header>
     <main>
       <div class="row">
-        <div class="col">
+        <div class="col-lg">
           <button
             type="button"
             class="btn btn-primary float-end"
@@ -31,16 +31,14 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
           <div class="fs-4">Expression</div>
           <text-editor :value="expr" @update="expr = $event" />
           <json-editor :value="expr" @update="expr = $event" />
-        </div>
-        <div class="col">
-          <div class="fs-4">Context</div>
+          <div class="fs-4 mt-3">Context</div>
           <context-table
-            :context="context"
-            :variables="variables"
-            @update="context = $event"
-          />
+              :context="context"
+              :variables="variables"
+              @update="context = $event"
+            />
         </div>
-        <div class="col">
+        <div class="col-lg">
           <button
             type="button"
             class="btn btn-primary float-end"
