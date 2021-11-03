@@ -2,7 +2,6 @@
 Provides an editable list of context variables and their associated test values.
 
 TODO: separate out the modal component?
-TODO: fix data entry in modal
 </docs>
 
 <template>
@@ -23,9 +22,11 @@ TODO: fix data entry in modal
           ),
         }"
       >
-        <td @click="openModal(dd)">{{ dd.name }}</td>
+        <td @click="openModal(dd)" class="clickable">{{ dd.name }}</td>
         <td>
-          <span @click="openModal(dd)">{{ renderValues(dd.values) }}</span
+          <span @click="openModal(dd)" class="clickable">{{
+            renderValues(dd.values)
+          }}</span
           ><button
             v-if="!variables.includes(dd.name)"
             type="button"
@@ -73,7 +74,11 @@ TODO: fix data entry in modal
             :value="contextValue"
             v-on:keyup.enter="updateContextValue"
             class="my-2 form-control"
+            ref="editedValue"
           />
+          <div v-if="!modalState.valid" class="text-danger small">
+            Invalid. Accepted values include false, true, numbers and "strings".
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -107,7 +112,7 @@ export default {
     },
   },
   mixins: [Shared],
-  emits: ['update'],
+  emits: ["update"],
   mounted() {
     varModal = new Modal(this.$refs.variableModal);
   },
@@ -117,19 +122,24 @@ export default {
       modalState: {
         variableIdx: null,
         valueIdx: -1,
+        valid: true,
       },
     };
   },
   computed: {
     contextValue() {
-      if (this.modalState.variableIdx > -1 && this.modalState.valueIdx > -1) {
-        return this.renderValue(
-          this.context[this.modalState.variableIdx].values[
-            this.modalState.valueIdx
-          ]
-        );
+      if (this.modalState.valid) {
+        if (this.modalState.variableIdx > -1 && this.modalState.valueIdx > -1) {
+          return this.renderValue(
+            this.context[this.modalState.variableIdx].values[
+              this.modalState.valueIdx
+            ]
+          );
+        } else {
+          return null;
+        }
       } else {
-        return null;
+        return this.$refs.editedValue.value;
       }
     },
   },
@@ -139,7 +149,7 @@ export default {
     },
     removeVar(dd) {
       const clone = [...this.context];
-      clone.splice(this.context.indexOf(dd),1);
+      clone.splice(this.context.indexOf(dd), 1);
       this.$emit("update", clone);
     },
     openModal(dd) {
@@ -147,6 +157,7 @@ export default {
       this.modalState = {
         variableIdx: this.context.indexOf(dd),
         valueIdx: -1,
+        valid: true,
       };
       varModal.show();
     },
@@ -158,20 +169,43 @@ export default {
       }
     },
     updateContextValue(evt) {
-      const clone =  [...this.context];
-      if (this.modalState.valueIdx == -1) {
-        clone[this.modalState.variableIdx].values.push(JSON.parse(evt.target.value));
-      } else {
-        clone[this.modalState.variableIdx].values[this.modalState.valueIdx].push(JSON.parse(evt.target.value));
+      try {
+        const value = JSON.parse(evt.target.value);
+        this.modalState.valid = true;
+        const clone = [...this.context];
+        if (this.modalState.valueIdx == -1) {
+          clone[this.modalState.variableIdx].values.push(value);
+        } else {
+          clone[this.modalState.variableIdx].values[this.modalState.valueIdx] =
+            value;
+        }
+        this.$emit("update", clone);
+        this.modalState.valueIdx = -1;
+      } catch (e) {
+        this.modalState.valid = false;
+        console.info(
+          "invalid variable value: ",
+          evt.target.value,
+          "\n",
+          e.message
+        );
       }
-      this.$emit("update", clone);
-      this.modalState.valueIdx = -1;
     },
     removeValue(idx) {
-      const clone =  [...this.context];
+      const clone = [...this.context];
       clone[this.modalState.variableIdx].values.splice(idx, 1);
       this.$emit("update", clone);
+      if (this.modalState.valueIdx == idx) {
+        this.modalState.valueIdx = -1;
+        this.modalState.valid = true;
+      }
     },
   },
 };
 </script>
+
+<style scoped>
+.clickable {
+  cursor: pointer;
+}
+</style>
