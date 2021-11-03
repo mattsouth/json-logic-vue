@@ -12,8 +12,8 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
         This tool is for testing and sharing
         <a href="https://jsonlogic.com">JsonLogic</a> expressions.
         If you enter a valid JsonLogic or JavaScript equivalent expression
-        you will see the expression evaluated for all variable value
-        combinations.  Tap or click a Context variable to edit the values.
+        it will be evaluated.  All variable value combinations are shown.
+        Tap or click a variable in the Context section to edit the values.
       </p>
     </header>
     <main>
