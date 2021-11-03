@@ -182,9 +182,22 @@ export default {
   },
   watch: {
     expr() {
-      const dds = this.context.map((dd) => dd.name);
+      // trim / extend context based on the new expression
+      const dds = [];
+      const old = [];
+      for (const [idx, dd] of this.context.entries()) {
+        dds.push(dd.name);
+        if (!this.variables.includes(dd.name) && dd.values.length == 1 && dd.values[0] === null) {
+          old.push(idx);
+        }
+      }
       for (const dd of this.variables.filter((x) => !dds.includes(x))) {
+        // add new variables to the context
         this.context.push({ name: dd, values: [null] });
+      }
+      for (const idx of old) {
+        // remove context variables without values
+        this.context.splice(idx, 1);
       }
     },
   },
