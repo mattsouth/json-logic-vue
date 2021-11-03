@@ -9,9 +9,11 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
     <header>
       <div class="fs-2">JsonLogic demo</div>
       <p>
-        <a href="https://jsonlogic.com">JsonLogic</a> allows side-effect free
-        expressions over data. This tool is for testing and sharing those
-        expressions.
+        This tool is for testing and sharing
+        <a href="https://jsonlogic.com">JsonLogic</a> expressions.
+        If you enter a valid JsonLogic or JavaScript equivalent expression
+        you will see the expression evaluated for all variable value
+        combinations.  Tap or click a Context variable to edit the values.
       </p>
     </header>
     <main>
@@ -19,7 +21,7 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
         <div class="col-lg">
           <button
             type="button"
-            class="btn btn-primary float-end"
+            class="btn btn-primary btn-sm float-end"
             @click="
               expr = {};
               context = [];
@@ -29,8 +31,10 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
             Clear
           </button>
           <div class="fs-4">Expression</div>
-          <text-editor :value="expr" @update="expr = $event" />
+          <div class="form-text">JsonLogic</div>
           <json-editor :value="expr" @update="expr = $event" />
+          <div class="form-text">JavaScript</div>
+          <text-editor :value="expr" @update="expr = $event" />
           <div class="fs-4 mt-3">Context</div>
           <context-table
               :context="context"
@@ -41,7 +45,7 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
         <div class="col-lg">
           <button
             type="button"
-            class="btn btn-primary float-end"
+            class="btn btn-primary btn-sm float-end"
             :disabled="Object.keys(expr).length == 0"
             data-bs-toggle="modal"
             data-bs-target="#shareModal"

@@ -7,7 +7,7 @@ TODO: Use a slot to pass styling classes from consumer
 </docs>
 
 <template>
-  <input type="text" v-model="render" class="my-2 form-control" />
+  <input type="text" v-model="render" class="mb-2 form-control" />
 </template>
 
 <script>
