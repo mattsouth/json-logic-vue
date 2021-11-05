@@ -7,7 +7,8 @@ TODO: Use a slot to pass styling classes from consumer
 </docs>
 
 <template>
-  <input type="text" v-model="render" class="mb-2 form-control" />
+  <input ref="textEditor" type="text" v-model="render" class="mb-2 form-control" />
+  <div class="small text-danger">{{validation}}&nbsp;</div>
 </template>
 
 <script>
@@ -23,18 +24,43 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      valid: true,
+      validation: ""
+    }
+  },
+  emits: ['update', 'valid'],
   computed: {
     render: {
       get: function () {
-        return renderJsonLogic(this.value);
-      },
+        if (this.valid) {
+            return renderJsonLogic(this.value);
+        } else {
+          return this.$refs.textEditor.value;
+        }
+    },
       set: function (text) {
         clearTimeout(timeout);
         timeout = setTimeout(() => {
           try {
-            this.$emit("update", transformJS(text));
+            const json = transformJS(text);
+            if (!this.valid) {
+              this.valid = true;
+              this.$emit("valid", true);
+              this.validation = "";
+            }
+            if (this.value != json) {
+              console.log(JSON.stringify(json));
+              this.$emit("update", json);
+            }
           } catch (e) {
-            console.log(text, e);
+            if (this.valid) {
+              this.valid = false;
+              this.$emit("valid", false);
+            }
+            this.validation = e.message;
+            //console.info('conversion error:', text, e.message);
           }
         }, 400);
       },

@@ -5,6 +5,7 @@ A version of the ace-editor that edits a Json Logic object.
 <template>
   <v-ace-editor
     v-model:value="text"
+    @init="handleInit"
     lang="json"
     theme="textmate"
     :options="{ tabSize: 2, useWorker: true }"
@@ -33,6 +34,7 @@ export default {
   components: {
     VAceEditor,
   },
+  emits: ['update', 'valid'],
   computed: {
     text: {
       // JSON text for atom editor
@@ -54,6 +56,9 @@ export default {
           }
         }
       },
+      jsonInvalid() {
+          return !this.jsonValid;
+      }
     },
     style() {
       return (
@@ -63,5 +68,17 @@ export default {
       );
     },
   },
+  methods: {
+      handleInit(editor) {
+          const _this = this;
+          editor.getSession().on("changeAnnotation", function() {
+             const valid = (editor.getSession().getAnnotations()==0);
+             if (valid != this.jsonValid) {
+                 _this.$emit('valid', valid);
+                 _this.jsonValid = valid;
+             }
+          });
+      }
+  }
 };
 </script>

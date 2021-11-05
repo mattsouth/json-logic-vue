@@ -32,9 +32,9 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
           </button>
           <div class="fs-4">Expression</div>
           <div class="form-text">JsonLogic</div>
-          <json-editor :value="expr" @update="expr = $event" />
+          <json-editor :value="expr" @update="updateExpr" />
           <div class="form-text">JavaScript</div>
-          <text-editor :value="expr" @update="expr = $event" />
+          <text-editor :value="expr" @update="updateExpr" />
           <div class="fs-4 mt-3">Context</div>
           <context-table
               :context="context"
@@ -137,6 +137,10 @@ export default {
   computed: {
     variables() {
       function helper(expr, vals) {
+        if (expr == null) {
+            return vals;
+        } else {
+
         if (Object.keys(expr).includes("var")) {
           vals.push(expr.var);
           return vals;
@@ -166,6 +170,7 @@ export default {
           }
         }
       }
+  }
       return helper(this.expr, []);
     },
   },
@@ -179,6 +184,9 @@ export default {
         encodeURIComponent(JSON.stringify(this.context))
       );
     },
+    updateExpr(json) {
+      this.expr = json;
+    }
   },
   watch: {
     expr() {
