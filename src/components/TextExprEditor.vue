@@ -51,7 +51,6 @@ export default {
               this.validation = "";
             }
             if (this.value != json) {
-              console.log(JSON.stringify(json));
               this.$emit("update", json);
             }
           } catch (e) {
