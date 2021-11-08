@@ -1,6 +1,6 @@
 {
   "name": "json-logic-vue",
-  "description": "Some vue components for working with json-logic",
+  "description": "A project for investigating tool support for JsonLogic expressions.",
   "version": "0.1.0",
   "private": true,
   "scripts": {
