@@ -30,12 +30,10 @@ TODO: Fix "Will-change memory consumption is too high" shown in firefox console.
           >
             Clear
           </button>
-          <div class="fs-4">Expression</div>
-          <div class="form-text">JsonLogic</div>
+          <div class="fs-4 mb-1">Expression</div>
           <json-editor :value="expr" @update="updateExpr" />
-          <div class="form-text">JavaScript</div>
           <text-editor :value="expr" @update="updateExpr" />
-          <div class="fs-4 mt-3">Context</div>
+          <div class="fs-4 mt-2">Context</div>
           <context-table
               :context="context"
               :variables="variables"

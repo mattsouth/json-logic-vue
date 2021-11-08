@@ -11,6 +11,7 @@ A version of the ace-editor that edits a Json Logic object.
     :options="{ tabSize: 2, useWorker: true }"
     style="height: 300px; border-radius: .25rem; border: 1px solid #ced4da;"
   />
+  <div class="text-secondary small mb-2">JsonLogic</div>
 </template>
 
 <script>

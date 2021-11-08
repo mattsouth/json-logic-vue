@@ -7,8 +7,8 @@ TODO: Use a slot to pass styling classes from consumer
 </docs>
 
 <template>
-  <input ref="textEditor" type="text" v-model="render" class="mb-2 form-control" />
-  <div class="small text-danger">{{validation}}&nbsp;</div>
+  <input ref="textEditor" type="text" v-model="render" class="form-control" />
+  <div class="small text-secondary">JavaScript<span class="small text-danger" v-if="!valid"> - {{validation}}</span></div>
 </template>
 
 <script>
