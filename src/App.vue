@@ -185,7 +185,7 @@ export default {
       );
     },
     updateExpr(json) {
-      this.expr = json;
+      if (json == null) {this.expr = {}} else { this.expr = json }
     }
   },
   watch: {
