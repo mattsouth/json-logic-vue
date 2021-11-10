@@ -44,6 +44,13 @@ TODO: separate out the modal component?
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Edit variable: {{ current.name }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            :disabled="!emptyValue"
+          ></button>
         </div>
         <div class="modal-body">
           <table class="table">
@@ -71,8 +78,9 @@ TODO: separate out the modal component?
           </table>
           <input
             type="text"
-            :value="contextValue"
-            v-on:keyup.enter="updateContextValue"
+            :value="modalState.value"
+            v-on:keyup.enter="enterUpdateContextValue"
+            v-on:keyup="updateValue"
             class="my-2 form-control"
             ref="editedValue"
           />
@@ -84,9 +92,18 @@ TODO: separate out the modal component?
           <button
             type="button"
             class="btn btn-secondary"
-            data-bs-dismiss="modal"
+            @click="cancelUpdate"
+            :disabled="emptyValue"
           >
-            Close
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="buttonUpdateContextValue"
+            :disabled="emptyValue"
+          >
+            Update
           </button>
         </div>
       </div>
@@ -123,24 +140,16 @@ export default {
         variableIdx: null,
         valueIdx: -1,
         valid: true,
+        value: null,
       },
     };
   },
   computed: {
-    contextValue() {
-      if (this.modalState.valid) {
-        if (this.modalState.variableIdx > -1 && this.modalState.valueIdx > -1) {
-          return this.renderValue(
-            this.context[this.modalState.variableIdx].values[
-              this.modalState.valueIdx
-            ]
-          );
-        } else {
-          return null;
-        }
-      } else {
-        return this.$refs.editedValue.value;
-      }
+    emptyValue() {
+      return (
+        this.modalState.value == null ||
+        (this.modalState.value.trim && this.modalState.value.trim().length == 0)
+      );
     },
   },
   methods: {
@@ -164,13 +173,23 @@ export default {
     selectContextValue(idx) {
       if (this.modalState.valueIdx == idx) {
         this.modalState.valueIdx = -1;
+        this.modalState.value = null;
       } else {
         this.modalState.valueIdx = idx;
+        this.modalState.value = this.renderValue(
+          this.context[this.modalState.variableIdx].values[idx]
+        );
       }
     },
-    updateContextValue(evt) {
+    enterUpdateContextValue(evt) {
+      this.updateContextValue(evt.target.value);
+    },
+    buttonUpdateContextValue() {
+      this.updateContextValue(this.modalState.value);
+    },
+    updateContextValue(rawval) {
       try {
-        const value = JSON.parse(evt.target.value);
+        const value = JSON.parse(rawval);
         this.modalState.valid = true;
         const clone = [...this.context];
         if (this.modalState.valueIdx == -1) {
@@ -181,14 +200,11 @@ export default {
         }
         this.$emit("update", clone);
         this.modalState.valueIdx = -1;
+        this.$refs["editedValue"].value = null; // needed for enter update
+        this.modalState.value = null; // needed for button update
       } catch (e) {
         this.modalState.valid = false;
-        console.info(
-          "invalid variable value: ",
-          evt.target.value,
-          "\n",
-          e.message
-        );
+        console.info("invalid variable value: ", rawval, "\n", e.message);
       }
     },
     removeValue(idx) {
@@ -199,6 +215,13 @@ export default {
         this.modalState.valueIdx = -1;
         this.modalState.valid = true;
       }
+    },
+    updateValue(evt) {
+      this.modalState.value = evt.target.value;
+    },
+    cancelUpdate() {
+      this.modalState.valueIdx = -1;
+      this.modalState.value = null;
     },
   },
 };
