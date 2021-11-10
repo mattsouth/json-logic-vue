@@ -61,7 +61,7 @@ TODO: separate out the modal component?
                 :class="{ 'table-active': idx == modalState.valueIdx }"
               >
                 <td>
-                  <span @click="selectContextValue(idx)">{{
+                  <span @click="selectContextValue(idx)" class="clickable">{{
                     renderValue(current.values[idx])
                   }}</span>
                   <button
