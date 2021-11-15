@@ -8,6 +8,8 @@ export default {
       } else {
         if (typeof val == "string") {
           return '"' + val + '"';
+        } else if (typeof val == "object") {
+          return JSON.stringify(val);
         } else {
           return val.toString();
         }

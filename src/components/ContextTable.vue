@@ -85,7 +85,7 @@ TODO: separate out the modal component?
             ref="editedValue"
           />
           <div v-if="!modalState.valid" class="text-danger small">
-            Invalid. Accepted values include false, true, numbers and "strings".
+            Invalid. Accepted values include false, true, numbers, "strings" and JSON objects.
           </div>
         </div>
         <div class="modal-footer">

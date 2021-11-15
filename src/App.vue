@@ -153,8 +153,9 @@ export default {
                 for (const arrexpr of val) {
                   const newvals = helper(arrexpr, []);
                   for (const newval of newvals) {
-                    if (!vals.includes(newval)) {
-                      vals.push(newval);
+                    const root = newval.split(".")[0];
+                    if (!vals.includes(root)) {
+                      vals.push(root);
                     }
                   }
                 }
