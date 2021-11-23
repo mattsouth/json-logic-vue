@@ -180,7 +180,7 @@ export default {
         "?expr=" +
         encodeURIComponent(renderJsonLogic(this.expr)) +
         "&context=" +
-        encodeURIComponent(JSON.stringify(this.context))
+        encodeURIComponent(JSON.stringify(this.context.filter((val) => this.variables.includes(val.name))))
       );
     },
     updateExpr(json) {
