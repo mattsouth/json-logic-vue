@@ -26,7 +26,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.20.0",
-    "execa": "^6.0.0"
+    "execa": "5.1.1"
   },
   "repository": "https://github.com/mattsouth/json-logic-vue",
   "eslintConfig": {
