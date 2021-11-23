@@ -2,7 +2,6 @@
   "name": "json-logic-vue",
   "description": "A project for investigating tool support for JsonLogic expressions.",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -29,6 +28,7 @@
     "eslint-plugin-vue": "^7.20.0",
     "execa": "^6.0.0"
   },
+  "repository": "https://github.com/mattsouth/json-logic-vue",
   "eslintConfig": {
     "root": true,
     "env": {
