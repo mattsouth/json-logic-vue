@@ -1,6 +1,6 @@
 # json-logic-vue
 
-[![Demo](https://img.shields.io/badge/-demo-blue)](https://mattsouth.github.io/json-logic-vue/?expr=!flag&context=%5B%7B%22name%22%3A%22flag%22%2C%22values%22%3A%5Bnull%2Cfalse%2Ctrue%5D%7D%5D)
+A collection of web components for viewing and evaluating [JsonLogic](https://jsonlogic.com) expressions written in [vue3](https://vuejs.org/) and [bootstrap5](https://getbootstrap.com) with a "sandbox" [![Demo](https://img.shields.io/badge/-demo-blue)](https://mattsouth.github.io/json-logic-vue/?expr=!flag&context=%5B%7B%22name%22%3A%22flag%22%2C%22values%22%3A%5Bnull%2Cfalse%2Ctrue%5D%7D%5D).
 
 ## Notes
 
