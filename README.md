@@ -26,4 +26,11 @@ Useful:
 - [ ] autocomplete in the text editor
 - [ ] validation in the json editor
 - [ ] autocomplete in the json editor
-- [ ] visual editor
+- [ ] visual editor (frame-based?)
+
+### Frame based editors
+
+Getting the usability of a visual expression editor right is tricky, especially one that can support beginners and experts.  Some interesting ideas are here:
+
+* https://microbit.org/news/2022-02-24/introducing-strype-a-framebased-editor/
+* https://www.greenfoot.org/frames/
